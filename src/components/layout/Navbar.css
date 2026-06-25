@@ -314,7 +314,7 @@ backdrop-filter: blur(10px);
     display: flex;
   }
   .navbar__logo-text {
-  font-size: 17px;
+  font-size: 10px;
 }
 .navbar__back {
   display: flex;
