@@ -42,10 +42,6 @@ const banners = [
   },
 ];
 
-
-
-
-
   const filteredProducts =
     activeCategory === "all"
       ? PRODUCTS
@@ -58,7 +54,7 @@ const banners = [
 
       <Navbar />
 
-      <main className="page-wrapper">
+      <main className="page-wrapperr">
         <div className="container">
 <Swiper
   modules={[Autoplay, EffectFade]}
