@@ -309,10 +309,6 @@ backdrop-filter: blur(10px);
   .navbar__links {
     display: none;
   }
-
-  .navbar__hamburger {
-    display: flex;
-  }
   .navbar__logo-text {
   font-size: 15px;
 }
