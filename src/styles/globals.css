@@ -760,3 +760,168 @@ ul, ol {
 
   line-height: 1.6;
 }
+
+/* Card Custom Spesifik */
+.product-card--custom {
+  border: 2px dashed #34c759;
+  background-color: #f9fff9;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.product-card__custom-icon {
+  font-size: 3rem;
+  color: #34c759;
+  margin-bottom: 0.5rem;
+}
+
+/* Bottom Sheet Container & Overlay */
+.bottom-sheet-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+  display: flex;
+  align-items: flex-end; /* Memaksa pop-up melekat di bawah layar */
+}
+
+.bottom-sheet-content {
+  width: 100%;
+  max-height: 85vh; /* Batas tinggi konten maksimal */
+  background: #ffffff;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  animation: slideUp 0.3s ease-out; /* Animasi nongol dari bawah */
+}
+
+.bottom-sheet-header {
+  padding: 1rem;
+  text-align: center;
+  position: relative;
+  border-bottom: 1px solid #eee;
+}
+.bottom-sheet-drag-handle {
+  width: 40px;
+  height: 5px;
+  background: #ccc;
+  border-radius: 3px;
+  margin: 0 auto 0.5rem auto;
+}
+.bottom-sheet-close {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+
+.bottom-sheet-body {
+  padding: 1.5rem;
+  overflow-y: auto; /* Jika isi form panjang, bisa di-scroll internal */
+}
+
+/* Form Styles */
+.form-group {
+  margin-bottom: 1.25rem;
+}
+.form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+/* Selector Grid Buttons */
+.custom-selector-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+@media (max-width: 576px) {
+  .custom-selector-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+.selector-item {
+  padding: 10px;
+  border: 1px solid #ddd;
+  background: #fff;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.selector-item.active {
+  background: #34c759;
+  color: white;
+  border-color: #34c759;
+}
+
+/* Counter Berat */
+.weight-counter {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: 0.5rem;
+}
+.weight-counter button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid #ccc;
+  background: #f8f9fa;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+.weight-counter button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.weight-display {
+  font-size: 1.25rem;
+  font-weight: 700;
+  min-width: 60px;
+  text-align: center;
+}
+
+/* Ringkasan & Tombol Beli */
+.custom-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+  gap: 1rem;
+}
+@media (max-width: 576px) {
+  .custom-summary {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .custom-summary .btn {
+    width: 100%;
+  }
+}
+.summary-label {
+  font-size: 0.85rem;
+  color: #666;
+}
+.summary-price {
+  color: #34c759;
+  margin: 0;
+}
+
+/* Animasi Slide Up */
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
