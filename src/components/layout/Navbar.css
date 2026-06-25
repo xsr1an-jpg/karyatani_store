@@ -313,6 +313,8 @@ backdrop-filter: blur(10px);
   .navbar__hamburger {
     display: flex;
   }
+  .navbar__logo-text {
+  font-size: 17px;
 }
 .navbar__back {
   display: flex;
@@ -329,4 +331,5 @@ backdrop-filter: blur(10px);
 
 .navbar__back:hover {
   transform: translateX(-2px);
+}
 }
