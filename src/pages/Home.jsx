@@ -74,7 +74,6 @@ export default function Home() {
 
     addItem(customProductObj);
     setIsBottomSheetOpen(false);
-    alert("Pesanan ukuran khusus berhasil ditambahkan ke keranjang! 🎉");
   };
 
   const filteredProducts =

@@ -777,35 +777,62 @@ ul, ol {
   margin-bottom: 0.5rem;
 }
 
-/* Bottom Sheet Container & Overlay */
+/* 1. Overlay dipastikan menutup full layar dengan benar */
 .bottom-sheet-overlay {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  right: 0;
+  bottom: 0;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 9999;
   display: flex;
-  align-items: flex-end; /* Memaksa pop-up melekat di bawah layar */
+  align-items: flex-end; /* Memastikan sheet muncul dari bawah */
 }
 
+/* 2. Container utama Bottom Sheet */
 .bottom-sheet-content {
   width: 100%;
-  max-height: 85vh; /* Batas tinggi konten maksimal */
-  background: #ffffff;
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
+  background-color: #ffffff;
+  border-radius: 16px 16px 0 0;
+  
+  /* Solusi Utama: Gunakan max-height dinamis agar tidak terpotong address bar */
+  max-height: 85vh; /* Menggunakan 85% dari tinggi layar */
+  max-height: 85dvh; /* dvh = Dynamic Viewport Height (fitur modern untuk handle address bar HP) */
+  
   display: flex;
-  flex-direction: column;
-  animation: slideUp 0.3s ease-out; /* Animasi nongol dari bawah */
+  flex-direction: column; /* Membagi header, body, dan footer secara vertikal */
 }
 
+/* 3. Bagian Header tetap diam di atas */
 .bottom-sheet-header {
-  padding: 1rem;
-  text-align: center;
-  position: relative;
+  padding: 16px;
   border-bottom: 1px solid #eee;
+  flex-shrink: 0; /* Mencegah header menyusut */
+}
+
+/* 4. Bagian Body (Form Pilihan Rasa) yang BISA di-scroll jika layar kekecilan */
+.bottom-sheet-body {
+  padding: 16px;
+  overflow-y: auto; /* Memunculkan scroll internal jika konten kepanjangan */
+  flex-grow: 1;
+  -webkit-overflow-scrolling: touch; /* Biar scroll di HP terasa mulus/smooth */
+  
+  /* Berikan ruang potong di bawah agar tidak menempel dengan summary */
+  padding-bottom: 24px; 
+}
+
+/* 5. Bagian Ringkasan Harga & Tombol Konfirmasi (Footer) */
+/* Bagian ini WAJIB dikunci di paling bawah agar selalu kelihatan tanpa perlu di-scroll */
+.custom-summary {
+  padding: 16px;
+  border-top: 1px solid #eee;
+  background-color: #ffffff;
+  flex-shrink: 0; /* Mencegah footer tertekan atau mengecil */
+  
+  /* Tambahkan padding aman untuk HP yang punya notch bawah (seperti iPhone baru) */
+  padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px)); 
+
 }
 .bottom-sheet-drag-handle {
   width: 40px;
