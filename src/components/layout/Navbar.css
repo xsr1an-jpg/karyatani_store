@@ -73,7 +73,7 @@ backdrop-filter: blur(10px);
 .navbar__logo-text {
   font-family: var(--font-display);
   font-size: 20px;
-  color: var(--text);
+  color: #386031;
   letter-spacing: -0.02em;
 }
 
