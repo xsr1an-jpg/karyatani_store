@@ -38,9 +38,6 @@ useEffect(() => {
 
       <main className="page-wrapper">
         <div className="container">
-  <h1 style={{ marginBottom: "20px" }}>
-    Keranjang Belanja
-  </h1>
 
   {items.length === 0 ? (
     <div className="empty-cart">
