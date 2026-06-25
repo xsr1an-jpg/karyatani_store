@@ -85,60 +85,6 @@ const isCartPage = location.pathname === "/keranjang";
 )}
 
           {/* Right actions */}
-          <div className="navbar__actions">
-  {isCartPage ? (
-    <Link to="/" className="navbar__back">
-      <svg
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M19 12H5" />
-        <path d="M12 19l-7-7 7-7" />
-      </svg>
-      <span>Home</span>
-    </Link>
-  ) : (
-    <>
-      <Link
-        to="/keranjang"
-        className="navbar__cart"
-        aria-label={`Keranjang, ${totalItems} produk`}
-      >
-       <i
-  className="bi bi-cart3"
-  style={{ fontSize: "28px" }}
-></i>
-
-        {totalItems > 0 && (
-          <motion.span
-            key={totalItems}
-            className="navbar__badge"
-            initial={{ scale: 0.5, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-          >
-            {totalItems > 99 ? "99+" : totalItems}
-          </motion.span>
-        )}
-      </Link>
-
-      <button
-        className={`navbar__hamburger ${mobileOpen ? "open" : ""}`}
-        onClick={() => setMobileOpen(v => !v)}
-        aria-label="Toggle menu"
-      >
-        <span />
-        <span />
-        <span />
-      </button>
-    </>
-  )}
-</div>
         </div>
       </header>
 
