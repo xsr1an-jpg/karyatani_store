@@ -23,7 +23,7 @@ export default function Navbar() {
       <div className="container navbar__inner">
         {/* Sisi Kiri: Kondisional antara Logo Toko atau Judul Keranjang */}
         {isCartPage ? (
-          <span className="navbar__logo-text" style={{ fontSize: '1.25rem', fontWeight: '600' }}>
+          <span className="navbar__logo-text navbar__cart-title">
             Keranjang
           </span>
         ) : (
@@ -33,9 +33,15 @@ export default function Navbar() {
               alt="Karya Tani"
               className="navbar__logo-img"
             />
-            <span className="navbar__logo-text">
-              Karya Tani <strong>Store</strong>
-            </span>
+            {/* Pembungkus Judul & Subjudul agar menumpuk ke bawah */}
+            <div className="navbar__brand-wrapper">
+              <span className="navbar__logo-text">
+                Karya Tani <strong>Store</strong>
+              </span>
+              <span className="navbar__subtitle">
+                Aneka Makanan Ringan
+              </span>
+            </div>
           </Link>
         )}
 
