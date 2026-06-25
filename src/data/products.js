@@ -91,22 +91,32 @@ export const PRODUCTS = [
 export const CUSTOM_CONFIG = {
   singkong: {
     basePricePerKg: 45000,
-    variants: ['Original', 'Balado', 'Jagung Manis', 'Ekstra Pedas']
+    image: 'produk-custom-singkong.webp',
+    variants: ['Original', 'Balado', 'Jagung Manis', 'Ekstra Pedas', 'Misda']
   },
   pangsit: {
-    basePricePerKg: 50000,
+    basePricePerKg: 45000,
+    image: 'produk-custom-pangsit.webp',
     variants: ['Bawang', 'Ubi Ungu', 'Bayam', 'Wortel', 'Labu', 'Buah Naga']
   },
   sistik: {
-    basePricePerKg: 40000,
+    basePricePerKg: 45000,
+    image: 'produk-custom-sistik.webp',
     variants: ['Bawang', 'Ubi Ungu', 'Bayam', 'Wortel', 'Labu', 'Buah Naga']
   },
   pisang: {
-    basePricePerKg: 60000,
+    basePricePerKg: 55000,
+    image: 'produk-custom-pisang.webp',
     variants: ['Original Panjang', 'Original Pendek', 'Manis', 'Gula Merah', 'Matang', 'Sale']
   },
+  ubi: {
+    basePricePerKg: 50000,
+    image: 'produk-custom-ubi.webp',
+    variants: ['Original', 'Ungu']
+  },
   talas: {
-    basePricePerKg: 55000,
+    basePricePerKg: 60000,
+    image: 'produk-custom-talas.webp',
     variants: ['Original', 'Balado']
   }
 };

@@ -134,13 +134,18 @@ useEffect(() => {
         }
       />
 
-      <div className="checkout-list">
-        {items.map((item) => (
-          <p key={item.id}>
-            {item.name} x {item.qty}
-          </p>
-        ))}
-      </div>
+<div className="checkout-list">
+  {items.map((item) => (
+    <p key={item.id}>
+      {/* Jika custom tampilkan nama + berat, jika reguler tampilkan nama + x qty */}
+      {item.isCustom ? (
+        <span>{item.name} ({item.weight})</span>
+      ) : (
+        <span>{item.name} x {item.qty}</span>
+      )}
+    </p>
+  ))}
+</div>
 
       <h3>Total: {formatPrice(totalPrice)}</h3>
 <h4>Jumlah Produk: {totalItems}</h4>
@@ -153,42 +158,44 @@ useEffect(() => {
     Batal
   </button>
 
-  <button
-    className="btn btn-primary"
-    onClick={() => {
-      if (!customerName.trim()) {
-        alert("Nama wajib diisi");
-        return;
-      }
+<button
+  className="btn btn-primary"
+  onClick={() => {
+    if (!customerName.trim()) {
+      alert("Nama wajib diisi");
+      return;
+    }
 
-      const pesan = `
+    const pesan = `
 Halo Karya Tani
 
 Nama: ${customerName}
 
 Pesanan:
 ${items
-  .map((i) => `${i.name} x ${i.qty}`)
+  .map((i) => {
+    // Jika produk adalah custom, tampilkan beratnya. Jika reguler, tampilkan qty (bungkus).
+    const jumlahBeli = i.isCustom ? i.weight : `${i.qty} bungkus`;
+    return `- ${i.name} (${jumlahBeli})`;
+  })
   .join("\n")}
 
-Jumlah Produk:
+Jumlah Jenis Produk:
 ${totalItems}
 
 Total:
 ${formatPrice(totalPrice)}
 `;
 
-      window.open(
-        `https://wa.me/6285294964110?text=${encodeURIComponent(
-          pesan
-        )}`
-      );
+    window.open(
+      `https://wa.me/6285294964110?text=${encodeURIComponent(pesan)}`
+    );
 
-      setShowModal(false);
-    }}
-  >
-    Konfirmasi
-  </button>
+    setShowModal(false);
+  }}
+>
+  Konfirmasi
+</button>
 </div>
 
       

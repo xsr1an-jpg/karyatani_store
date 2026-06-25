@@ -763,7 +763,7 @@ ul, ol {
 
 /* Card Custom Spesifik */
 .product-card--custom {
-  border: 2px dashed #34c759;
+  border: 2px dashed var(--primary);
   background-color: #f9fff9;
   display: flex;
   flex-direction: column;
@@ -772,99 +772,124 @@ ul, ol {
   text-align: center;
 }
 .product-card__custom-icon {
-  font-size: 3rem;
-  color: #34c759;
+  font-size: 5rem;
+  color: var(--primary);
   margin-bottom: 0.5rem;
 }
 
 /* 1. Overlay dipastikan menutup full layar dengan benar */
+/* ==========================================================================
+   KARYA TANI — Animated Bottom Sheet CSS (Clean & Fixed Layout)
+   ========================================================================== */
+
+/* 1. Overlay Latar Belakang Gelap */
 .bottom-sheet-overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0); /* Awalnya transparan */
   z-index: 9999;
   display: flex;
-  align-items: flex-end; /* Memastikan sheet muncul dari bawah */
+  align-items: flex-end; /* Memastikan sheet menempel di bawah layar */
+
+  /* PENTING UNTUK ANIMASI: Mencegah pop-up diklik/dilihat sebelum aktif */
+  opacity: 0;
+  visibility: hidden;
+  transition: background-color 0.4s ease, opacity 0.4s ease, visibility 0.4s;
 }
 
-/* 2. Container utama Bottom Sheet */
+/* Pemicu Animasi Masuk (Saat State React Berubah Menjadi Aktif) */
+.bottom-sheet-overlay.active {
+  opacity: 1;
+  visibility: visible;
+  background-color: rgba(0, 0, 0, 0.56); /* Menggelap halus */
+}
+
+
+/* 2. Container Utama Bottom Sheet */
 .bottom-sheet-content {
   width: 100%;
   background-color: #ffffff;
   border-radius: 16px 16px 0 0;
   
-  /* Solusi Utama: Gunakan max-height dinamis agar tidak terpotong address bar */
-  max-height: 85vh; /* Menggunakan 85% dari tinggi layar */
-  max-height: 85dvh; /* dvh = Dynamic Viewport Height (fitur modern untuk handle address bar HP) */
+  /* Solusi Safe-Height di Google Chrome HP */
+  max-height: 85vh; 
+  max-height: 85dvh; 
   
   display: flex;
-  flex-direction: column; /* Membagi header, body, dan footer secara vertikal */
+  flex-direction: column; 
+
+  /* PENTING UNTUK ANIMASI: Posisi awal disembunyikan 100% ke bawah luar layar */
+  transform: translateY(100%);
+  /* cubic-bezier memberikan efek pegas/membal premium saat pop-up naik */
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-/* 3. Bagian Header tetap diam di atas */
+/* Pemicu Animasi Naik (Saat Overlay Mendapat Kelas .active) */
+.bottom-sheet-overlay.active .bottom-sheet-content {
+  transform: translateY(0); /* Meluncur mulus naik ke atas */
+}
+
+
+/* 3. Bagian Header Tetap Diam di Atas */
 .bottom-sheet-header {
   padding: 16px;
   border-bottom: 1px solid #eee;
-  flex-shrink: 0; /* Mencegah header menyusut */
-  
-  /* TAMBAHKAN KODE DI BAWAH INI */
+  flex-shrink: 0; 
   display: flex;
   align-items: center;
-  justify-content: space-between; /* Membuat judul di kiri, tombol close di kanan */
-  position: relative; /* Jaga-jaga jika ada elemen absolute lain */
+  justify-content: space-between; 
+  position: relative; 
 }
 
-/* 4. Bagian Body (Form Pilihan Rasa) yang BISA di-scroll jika layar kekecilan */
-.bottom-sheet-body {
-  padding: 16px;
-  overflow-y: auto; /* Memunculkan scroll internal jika konten kepanjangan */
-  flex-grow: 1;
-  -webkit-overflow-scrolling: touch; /* Biar scroll di HP terasa mulus/smooth */
-  
-  /* Berikan ruang potong di bawah agar tidak menempel dengan summary */
-  padding-bottom: 24px; 
-}
-
-/* 5. Bagian Ringkasan Harga & Tombol Konfirmasi (Footer) */
-/* Bagian ini WAJIB dikunci di paling bawah agar selalu kelihatan tanpa perlu di-scroll */
-.custom-summary {
-  padding: 16px;
-  border-top: 1px solid #eee;
-  background-color: #ffffff;
-  flex-shrink: 0; /* Mencegah footer tertekan atau mengecil */
-  
-  /* Tambahkan padding aman untuk HP yang punya notch bawah (seperti iPhone baru) */
-  padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px)); 
-}
+/* Garis Handle Dekorasi */
 .bottom-sheet-drag-handle {
   width: 40px;
   height: 5px;
   background: #ccc;
   border-radius: 3px;
-  
-  /* UBAH BAGIAN INI agar posisi handle ditarik ke paling atas header */
   position: absolute;
   top: 6px;
   left: 50%;
   transform: translateX(-50%);
 }
+
+/* Tombol Tutup (Close Icon) */
 .bottom-sheet-close {
-  /* HAPUS position: absolute, top, dan right yang lama */
   background: none;
   border: none;
   font-size: 1.25rem;
   cursor: pointer;
-  padding: 4px; /* Biar area klik di HP lebih pas/nyaman */
+  padding: 4px; 
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #333; /* Warna ikon x */
+  color: #333; 
 }
 
 
+/* 4. Bagian Tengah/Isi Form Pilihan (Bisa Di-scroll Internal) */
+.bottom-sheet-body {
+  padding: 16px;
+  overflow-y: auto; 
+  flex-grow: 1;
+  -webkit-overflow-scrolling: touch; 
+  padding-bottom: 24px; 
+}
+
+
+/* 5. Bagian Ringkasan Harga & Tombol Konfirmasi (Terkunci di Bawah) */
+.custom-summary {
+  padding: 16px;
+  border-top: 1px solid #eee;
+  background-color: #ffffff;
+  flex-shrink: 0; 
+  
+  /* Mengamankan area potong untuk jenis layar smartphone ber-notch bawah */
+  padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px)); 
+}
 
 /* Form Styles */
 .form-group {
@@ -898,9 +923,9 @@ ul, ol {
   transition: all 0.2s;
 }
 .selector-item.active {
-  background: #34c759;
+  background: var(--primary);
   color: white;
-  border-color: #34c759;
+  border-color: var(--primary);
 }
 
 /* Counter Berat */

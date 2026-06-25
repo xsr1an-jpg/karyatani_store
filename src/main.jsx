@@ -7,7 +7,13 @@ import "./styles/globals.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <BrowserRouter>
+    {/* Mengaktifkan Future Flags v7 di sini untuk menghilangkan warning */}
+    <BrowserRouter
+      future={{
+        v7_startTransition: true,
+        v7_relativeSplatPath: true,
+      }}
+    >
       <CartProvider>
         <App />
       </CartProvider>

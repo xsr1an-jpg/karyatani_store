@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-
 import AppRouter from "./router/AppRouter";
 import { ToastContainer } from "react-toastify";
-
 import logo from "./assets/logo.svg";
 
 import "react-toastify/dist/ReactToastify.css";
@@ -12,43 +10,45 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-  document.body.style.overflow = "hidden";
+    // Kunci scroll layar saat animasi loader berjalan
+    document.body.style.overflow = "hidden";
 
-  const minimumTime = new Promise((resolve) =>
-    setTimeout(resolve, 3000)
-  );
+    // Set minimal waktu loading berputar selama 3 detik
+    const minimumTime = new Promise((resolve) =>
+      setTimeout(resolve, 3000)
+    );
 
-  const pageLoaded = new Promise((resolve) => {
-    if (document.readyState === "complete") {
-      resolve();
-    } else {
-      window.addEventListener("load", resolve, {
-        once: true,
-      });
-    }
-  });
+    // Memastikan aset-aset halaman web telah selesai dimuat sempurna
+    const pageLoaded = new Promise((resolve) => {
+      if (document.readyState === "complete") {
+        resolve();
+      } else {
+        window.addEventListener("load", resolve, {
+          once: true,
+        });
+      }
+    });
 
-  Promise.all([
-    minimumTime,
-    pageLoaded,
-  ]).then(() => {
-    setLoading(false);
-    document.body.style.overflow = "auto";
-  });
+    // Jalankan kedua instruksi bersamaan sebelum mematikan loader
+    Promise.all([minimumTime, pageLoaded]).then(() => {
+      setLoading(false);
+      document.body.style.overflow = "auto";
+    });
 
-  return () => {
-    document.body.style.overflow = "auto";
-  };
-}, []);
+    // Cleanup function untuk mengembalikan overflow body jika komponen unmount
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, []);
 
-
+  // Tampilan layar loading animasi
   if (loading) {
     return (
       <div className="loader-screen">
         <div className="loader-wrapper">
-
           <div className="loader-glow" />
 
+          {/* Animasi Ring Berputar */}
           <motion.div
             animate={{
               rotate: 360,
@@ -61,6 +61,7 @@ function App() {
             className="loader-ring"
           />
 
+          {/* Animasi Logo Membesar-Mengecil */}
           <motion.img
             src={logo}
             alt="Logo"
@@ -75,6 +76,7 @@ function App() {
             className="loader-logo"
           />
 
+          {/* Animasi Teks Berkedip Halus */}
           <motion.p
             animate={{
               opacity: [0.3, 1, 0.3],
@@ -88,12 +90,12 @@ function App() {
           >
             MEMUAT PRODUK...
           </motion.p>
-
         </div>
       </div>
     );
   }
 
+  // Tampilan utama aplikasi saat loading selesai
   return (
     <>
       <AppRouter />

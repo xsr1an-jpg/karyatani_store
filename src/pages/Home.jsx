@@ -1,7 +1,7 @@
 import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
 
-import { PRODUCTS, formatPrice, CUSTOM_CONFIG } from "../data/products"; // Pastikan CUSTOM_CONFIG di-import
+import { PRODUCTS, formatPrice, CUSTOM_CONFIG } from "../data/products";
 import { useCart } from "../context/CartContext";
 import { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -60,15 +60,19 @@ export default function Home() {
   };
 
   // Kirim pesanan khusus ke dalam keranjang belanja global
+  // Kirim pesanan khusus ke dalam keranjang belanja global
   const handleAddCustomToCart = () => {
     const finalPrice = getCustomPrice();
+    const config = CUSTOM_CONFIG[customCategory]; // Ambil config kategori aktif
+
     const customProductObj = {
-      id: `custom-${customCategory}-${Date.now()}`, // ID Unik agar tidak bentrok
+      id: `custom-${customCategory}-${Date.now()}`, 
       name: `${customCategory.charAt(0).toUpperCase() + customCategory.slice(1)} Custom (${customVariant})`,
       category: customCategory,
       price: finalPrice,
       weight: `${customWeight} kg`,
-      image: `${customCategory}-original.webp`, // fallback gambar default kategori
+      // SEKARANG MENGGUNAKAN GAMBAR DARI CONFIG, JIKA TIDAK ADA PAKAI FALLBACK
+      image: config?.image || 'produk-custom.webp', 
       isCustom: true
     };
 
@@ -133,24 +137,23 @@ export default function Home() {
           {/* Product Grid */}
           <div className="product-grid">
             
-            {/* CARD UKURAN KHUSUS (Selalu Tampil di Baris Pertama) */}
-            <div 
-  className="product-card product-card--custom" 
-  onClick={() => setIsBottomSheetOpen(true)}
-  style={{ cursor: 'pointer' }} // Memastikan kursor berubah jadi tangan saat di-hover
->
-  <div className="product-card__custom-icon">
-    <i className="bi bi-plus-circle-dotted"></i>
-  </div>
-  <h3>Ukuran Khusus</h3>
-  <p>Mulai dari 1 Kg</p>
-  <h4>Harga Menyesuaikan</h4>
-  
-  {/* Tombol tetap dipertahankan sebagai elemen visual pemanis */}
-  <button className="btn btn-secondary">
-    Atur Ukuran Custom
-  </button>
-</div>
+            {/* SOLUSI KATEGORI: Hanya muncul jika activeCategory === "all" */}
+            {activeCategory === "all" && (
+              <div 
+                className="product-card product-card--custom" 
+                onClick={() => setIsBottomSheetOpen(true)}
+                style={{ cursor: 'pointer' }}
+              >
+                <div className="product-card__custom-icon">
+                  <i className="bi bi-plus-circle-dotted"></i>
+                </div>
+                <h3>Ukuran Khusus/Custom</h3>
+                <p>Mulai dari 1 Kg untuk acara pernikahan/lainnya</p>
+                <button className="btn btn-secondary">
+                  Atur Ukuran Custom
+                </button>
+              </div>
+            )}
 
             {/* Render Produk Reguler */}
             {filteredProducts.map((product) => (
@@ -168,86 +171,87 @@ export default function Home() {
         </div>
       </main>
 
-      {/* POP-UP BOTTOM SHEET (Muncul dari Bawah Skala 100% Lebar Layar) */}
-      {isBottomSheetOpen && (
-        <div className="bottom-sheet-overlay" onClick={() => setIsBottomSheetOpen(false)}>
-          <div className="bottom-sheet-content" onClick={(e) => e.stopPropagation()}>
-            <div className="bottom-sheet-header">
-              <div className="bottom-sheet-drag-handle"></div>
-              <h3>Kustomisasi Produk (Min. 1 Kg)</h3>
-              <button className="bottom-sheet-close" onClick={() => setIsBottomSheetOpen(false)}>
-                <i className="bi bi-x-lg"></i>
-              </button>
+      {/* POP-UP BOTTOM SHEET (Menggunakan kelas transisi animasi dinamis) */}
+      <div 
+        className={`bottom-sheet-overlay ${isBottomSheetOpen ? "active" : ""}`} 
+        onClick={() => setIsBottomSheetOpen(false)}
+      >
+        <div className="bottom-sheet-content" onClick={(e) => e.stopPropagation()}>
+          <div className="bottom-sheet-header">
+            <div className="bottom-sheet-drag-handle"></div>
+            <h3>Kustomisasi Produk (Min. 1 Kg)</h3>
+            <button className="bottom-sheet-close" onClick={() => setIsBottomSheetOpen(false)}>
+              <i className="bi bi-x-lg"></i>
+            </button>
+          </div>
+
+          <div className="bottom-sheet-body">
+            {/* Pilih Kategori Utama */}
+            <div className="form-group">
+              <label>1. Pilih Kategori Cemilan</label>
+              <div className="custom-selector-grid">
+                {Object.keys(CUSTOM_CONFIG).map((cat) => (
+                  <button
+                    key={cat}
+                    type="button"
+                    className={`selector-item ${customCategory === cat ? 'active' : ''}`}
+                    onClick={() => setCustomCategory(cat)}
+                  >
+                    {cat.charAt(0).toUpperCase() + cat.slice(1)}
+                  </button>
+                ))}
+              </div>
             </div>
 
-            <div className="bottom-sheet-body">
-              {/* Pilih Kategori Utama */}
+            {/* Pilih Varian Rasa */}
+            {CUSTOM_CONFIG[customCategory] && (
               <div className="form-group">
-                <label>1. Pilih Kategori Cemilan</label>
+                <label>2. Pilih Varian Rasa</label>
                 <div className="custom-selector-grid">
-                  {Object.keys(CUSTOM_CONFIG).map((cat) => (
+                  {CUSTOM_CONFIG[customCategory].variants.map((variant) => (
                     <button
-                      key={cat}
+                      key={variant}
                       type="button"
-                      className={`selector-item ${customCategory === cat ? 'active' : ''}`}
-                      onClick={() => setCustomCategory(cat)}
+                      className={`selector-item ${customVariant === variant ? 'active' : ''}`}
+                      onClick={() => setCustomVariant(variant)}
                     >
-                      {cat.charAt(0).toUpperCase() + cat.slice(1)}
+                      {variant}
                     </button>
                   ))}
                 </div>
               </div>
+            )}
 
-              {/* Pilih Varian Rasa */}
-              {CUSTOM_CONFIG[customCategory] && (
-                <div className="form-group">
-                  <label>2. Pilih Varian Rasa</label>
-                  <div className="custom-selector-grid">
-                    {CUSTOM_CONFIG[customCategory].variants.map((variant) => (
-                      <button
-                        key={variant}
-                        type="button"
-                        className={`selector-item ${customVariant === variant ? 'active' : ''}`}
-                        onClick={() => setCustomVariant(variant)}
-                      >
-                        {variant}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Atur Kelipatan Berat */}
-              <div className="form-group">
-                <label>3. Atur Berat Produk (Kelipatan 0.5 Kg)</label>
-                <div className="weight-counter">
-                  <button 
-                    disabled={customWeight <= 1}
-                    onClick={() => setCustomWeight(prev => Math.max(1, prev - 0.5))}
-                  >
-                    -
-                  </button>
-                  <span className="weight-display">{customWeight} Kg</span>
-                  <button onClick={() => setCustomWeight(prev => prev + 0.5)}>+</button>
-                </div>
-              </div>
-
-              <hr />
-
-              {/* Info Total Harga Dinamis */}
-              <div className="custom-summary">
-                <div>
-                  <span className="summary-label">Estimasi Harga:</span>
-                  <h2 className="summary-price">{formatPrice(getCustomPrice())}</h2>
-                </div>
-                <button className="btn btn-primary btn-lg" onClick={handleAddCustomToCart}>
-                  Konfirmasi & Masuk Keranjang
+            {/* Atur Kelipatan Berat */}
+            <div className="form-group">
+              <label>3. Atur Berat Produk (Kelipatan 0.5 Kg)</label>
+              <div className="weight-counter">
+                <button 
+                  disabled={customWeight <= 1}
+                  onClick={() => setCustomWeight(prev => Math.max(1, prev - 0.5))}
+                >
+                  -
                 </button>
+                <span className="weight-display">{customWeight} Kg</span>
+                <button onClick={() => setCustomWeight(prev => prev + 0.5)}>+</button>
               </div>
+            </div>
+
+            <hr />
+
+            {/* Info Total Harga Dinamis */}
+            <div className="custom-summary">
+              <div>
+                <span className="summary-label">Estimasi Harga:</span>
+                <h2 className="summary-price">{formatPrice(getCustomPrice())}</h2>
+              </div>
+              <button className="btn btn-primary btn-lg" onClick={handleAddCustomToCart}>
+                Konfirmasi & Masuk Keranjang
+              </button>
             </div>
           </div>
         </div>
-      )}
+      </div>
 
       <Footer />
     </>
