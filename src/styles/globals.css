@@ -809,6 +809,12 @@ ul, ol {
   padding: 16px;
   border-bottom: 1px solid #eee;
   flex-shrink: 0; /* Mencegah header menyusut */
+  
+  /* TAMBAHKAN KODE DI BAWAH INI */
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Membuat judul di kiri, tombol close di kanan */
+  position: relative; /* Jaga-jaga jika ada elemen absolute lain */
 }
 
 /* 4. Bagian Body (Form Pilihan Rasa) yang BISA di-scroll jika layar kekecilan */
@@ -832,29 +838,33 @@ ul, ol {
   
   /* Tambahkan padding aman untuk HP yang punya notch bawah (seperti iPhone baru) */
   padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px)); 
-
 }
 .bottom-sheet-drag-handle {
   width: 40px;
   height: 5px;
   background: #ccc;
   border-radius: 3px;
-  margin: 0 auto 0.5rem auto;
+  
+  /* UBAH BAGIAN INI agar posisi handle ditarik ke paling atas header */
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 .bottom-sheet-close {
-  position: absolute;
-  right: 15px;
-  top: 15px;
+  /* HAPUS position: absolute, top, dan right yang lama */
   background: none;
   border: none;
   font-size: 1.25rem;
   cursor: pointer;
+  padding: 4px; /* Biar area klik di HP lebih pas/nyaman */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #333; /* Warna ikon x */
 }
 
-.bottom-sheet-body {
-  padding: 1.5rem;
-  overflow-y: auto; /* Jika isi form panjang, bisa di-scroll internal */
-}
+
 
 /* Form Styles */
 .form-group {
